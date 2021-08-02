@@ -3,19 +3,18 @@ import 'package:sqlite_service/components/cAppbar.dart';
 import 'package:sqlite_service/components/cButton.dart';
 import 'package:sqlite_service/components/cTextField.dart';
 import 'package:sqlite_service/scripts/sConstants.dart';
-import 'package:sqlite_service/services/svSqlite.dart';
 import 'package:sqlite_service/services/svString.dart';
 import 'package:sqlite_service/themes/tDimens.dart';
 import 'package:sqlite_service/themes/tStyle.dart';
 
-class ZureInitDatabase extends StatefulWidget {
-  const ZureInitDatabase({Key key}) : super(key: key);
+class ZureInitDatabaseScreen extends StatefulWidget {
+  const ZureInitDatabaseScreen({Key key}) : super(key: key);
 
   @override
-  _ZureInitDatabaseState createState() => _ZureInitDatabaseState();
+  _ZureInitDatabaseScreenState createState() => _ZureInitDatabaseScreenState();
 }
 
-class _ZureInitDatabaseState extends State<ZureInitDatabase> {
+class _ZureInitDatabaseScreenState extends State<ZureInitDatabaseScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   var tcDBName = TextEditingController();
@@ -170,13 +169,17 @@ class _ZureInitDatabaseState extends State<ZureInitDatabase> {
                     ],
                   ),
                 ),
-                SizedBox(height: cOffsetLg,),
+                SizedBox(
+                  height: cOffsetLg,
+                ),
                 ZureFullButton(
                   sTitle: 'Init Database',
-                  fAction: (bValidName && bValidPass)? () async {
-                    // var bOpen = await ZureSqliteService.initDatabase(tcDBName.text, tcDBPass.text);
-                    // Navigator.of(context).pop(bOpen);
-                  } : null,
+                  fAction: (bValidName && bValidPass)
+                      ? () async {
+                          // var bOpen = await ZureSqliteService.initDatabase(tcDBName.text, tcDBPass.text);
+                          // Navigator.of(context).pop(bOpen);
+                        }
+                      : null,
                 ),
               ],
             ),

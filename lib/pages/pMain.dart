@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sqlite_service/components/cAppbar.dart';
 import 'package:sqlite_service/components/cButton.dart';
 import 'package:sqlite_service/pages/pCreateTable.dart';
+import 'package:sqlite_service/pages/pInsertData.dart';
 import 'package:sqlite_service/services/svNavigator.dart';
 import 'package:sqlite_service/themes/tDimens.dart';
 
@@ -33,30 +34,31 @@ class _ZureMainScreenState extends State<ZureMainScreen> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              // ZureFullButton(
-              //   sTitle: 'Init Database',
-              //   fAction: () => ZureNavigatorService(context).zurePushToWidget(
-              //     pNext: ZureInitDatabase(),
-              //     fPopAction: (bOpen) {
-              //       if (bOpen) {
-              //         ZureNavigatorService(context).zureShowSnackBar(
-              //             'Securit Database Created!', _scaffoldKey);
-              //       }
-              //     },
-              //   ),
-              // ),
-              // SizedBox(
-              //   height: cOffsetBase,
-              // ),
+              ZureFullButton(
+                sTitle: 'Init Database',
+                fAction: () => ZureNavigatorService(context).zurePushToWidget(
+                  pNext: ZureInitDatabaseScreen(),
+                  fPopAction: (bOpen) {
+                    if (bOpen) {
+                      ZureNavigatorService(context).zureShowSnackBar(
+                          'Securit Database Created!', _scaffoldKey);
+                    }
+                  },
+                ),
+              ),
+              SizedBox(
+                height: cOffsetBase,
+              ),
               ZureFullButton(
                 sTitle: 'Create Table',
-                fAction: () => ZureNavigatorService(context)
-                    .zurePushToWidget(pNext: ZureCreateTable(), fPopAction: (bCreate) {
+                fAction: () => ZureNavigatorService(context).zurePushToWidget(
+                    pNext: ZureCreateTableScreen(),
+                    fPopAction: (bCreate) {
                       if (bCreate) {
                         ZureNavigatorService(context).zureShowSnackBar(
                             'Successful Created Table!', _scaffoldKey);
                       }
-                }),
+                    }),
               ),
               SizedBox(
                 height: cOffsetBase,
@@ -70,7 +72,8 @@ class _ZureMainScreenState extends State<ZureMainScreen> {
               ),
               ZureFullButton(
                 sTitle: 'Insert Data',
-                fAction: () {},
+                fAction: () => ZureNavigatorService(context)
+                    .zurePushToWidget(pNext: ZureInsertDataScreen()),
               ),
               SizedBox(
                 height: cOffsetBase,

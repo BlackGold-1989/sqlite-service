@@ -9,14 +9,14 @@ import 'package:sqlite_service/services/svNavigator.dart';
 import 'package:sqlite_service/services/svString.dart';
 import 'package:sqlite_service/themes/tDimens.dart';
 
-class ZureCreateTable extends StatefulWidget {
-  const ZureCreateTable({Key key}) : super(key: key);
+class ZureCreateTableScreen extends StatefulWidget {
+  const ZureCreateTableScreen({Key key}) : super(key: key);
 
   @override
-  _ZureCreateTableState createState() => _ZureCreateTableState();
+  _ZureCreateTableScreenState createState() => _ZureCreateTableScreenState();
 }
 
-class _ZureCreateTableState extends State<ZureCreateTable> {
+class _ZureCreateTableScreenState extends State<ZureCreateTableScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   var mtCreateTable = ZureTableModel(sName: '', models: []);
