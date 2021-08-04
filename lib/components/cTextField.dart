@@ -9,6 +9,7 @@ class ZureUnderLineTextField extends TextField {
     String sError,
     Widget wPrefix,
     Widget wSuffix,
+    bool bReadOnly = false,
   }) : super(
     controller: tcController,
     keyboardType: ttKeyBoard,
@@ -25,7 +26,8 @@ class ZureUnderLineTextField extends TextField {
       focusedErrorBorder: UnderlineInputBorder(),
       prefix: wPrefix,
       suffix: wSuffix,
-      errorText: sError
+      errorText: sError,
     ),
+    readOnly: bReadOnly,
   );
 }

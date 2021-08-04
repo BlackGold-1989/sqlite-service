@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
 import 'package:sqlite_service/pages/pMain.dart';
-import 'dart:async';
 
 import 'package:sqlite_service/services/svSqlite.dart';
 
-void main() async {
+void main() {
   WidgetsFlutterBinding.ensureInitialized();
-
-  ZureSqliteService.initDatabase();
   runApp(MyApp());
 }
 

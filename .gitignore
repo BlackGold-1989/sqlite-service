@@ -236,3 +236,5 @@ build/ios/iphonesimulator/Runner.app/_CodeSignature/CodeResources
 .dart_tool/flutter_build/a25360259ed101fbd9ea438505883666/outputs.json
 .dart_tool/flutter_build/a25360259ed101fbd9ea438505883666/App.framework/App
 build/f872507f30e2ff2523f0f1d19160266e.cache.dill.track.dill
+/.dart_tool/flutter_build/9b4f6a575d181828c3e847582ab8c2a8/
+/build/

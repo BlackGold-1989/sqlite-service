@@ -156,14 +156,6 @@ class _ZureCreateTableScreenState extends State<ZureCreateTableScreen> {
       }
     }
     setState(() {});
-    // if (ZureStringService.zureCheckRepeat(lNames)) {
-    //   ZureNavigatorService(context).zureShowSnackBar(
-    //     'Some field name was repeated',
-    //     _scaffoldKey,
-    //     type: ZureSnackBarType.ERROR,
-    //   );
-    //   bCheckValid = false;
-    // }
     return bCheckValid;
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:sqlite_service/themes/tDimens.dart';
 import 'package:sqlite_service/themes/tStyle.dart';
@@ -16,11 +18,13 @@ class ZureNavigatorService {
       Navigator.of(context)
           .pushReplacement(
               MaterialPageRoute<Object>(builder: (context) => pNext))
-          .then((value) => {if (fPopAction != null) fPopAction(value)});
+          .then((value) => {if (fPopAction != null) {fPopAction(value)}
+              });
     } else {
       Navigator.of(context)
           .push(MaterialPageRoute<Object>(builder: (context) => pNext))
-          .then((value) => {if (fPopAction != null) fPopAction(value)});
+          .then((value) => {if (fPopAction != null) {fPopAction(value)}
+              });
     }
   }
 

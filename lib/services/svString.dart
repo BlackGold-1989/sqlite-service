@@ -1,3 +1,6 @@
+import 'package:encrypt/encrypt.dart';
+import 'package:sqlite_service/scripts/sConstants.dart';
+
 class ZureStringService {
   static String zureCheckFormatter(String str) {
     if (str.isEmpty) {
@@ -28,5 +31,23 @@ class ZureStringService {
       }
     }
     return false;
+  }
+
+  static String encryptString(String data) {
+    final key = Key.fromUtf8(scEncryptKey);
+    final iv = IV.fromLength(16);
+    final encrypter = Encrypter(AES(key));
+
+    final encrypted = encrypter.encrypt(data, iv: iv);
+    return encrypted.base64;
+  }
+
+  static String decryptString(String encrypt) {
+    final key = Key.fromUtf8(scEncryptKey);
+    final iv = IV.fromLength(16);
+    final encrypter = Encrypter(AES(key));
+
+    final decrypted = encrypter.decrypt64(encrypt, iv: iv);
+    return decrypted;
   }
 }

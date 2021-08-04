@@ -14,3 +14,4 @@ const scPassValid = [
 
 const scDatabaseName = 'my_db';
 const scDatabasePass = 'Kyc123456@';
+const scEncryptKey = 'abcdefghijklmnopqrstuvwxyz196161';
