@@ -266,10 +266,7 @@ class _ZureInsertDataScreenState extends State<ZureInsertDataScreen> {
       print('[DB insert] data: ${jsonEncode(tbMap)}');
       var result = await ZureSqliteService.insertData(sTableName, tbMap);
       if (result != null) {
-        ZureNavigatorService(context).zureShowSnackBar(
-          'Success input data (id = $result).',
-          _scaffoldKey,
-        );
+        Navigator.of(context).pop(result);
       }
     } else {
       ZureNavigatorService(context).zureShowSnackBar(

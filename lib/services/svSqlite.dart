@@ -89,8 +89,7 @@ class ZureSqliteService {
     return result;
   }
 
-  static Future<int> deleteData(String tableName, Map<String, dynamic> tbMap,
-      String whereField, List<String> whereVal) async {
+  static Future<int> deleteData(String tableName, String whereField, List<String> whereVal) async {
     var result = await dbService.delete(tableName,
         where: '$whereField = ?', whereArgs: whereVal);
     return result;

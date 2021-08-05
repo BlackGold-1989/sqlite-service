@@ -55,6 +55,7 @@ class _ZureTableDetailScreenState extends State<ZureTableDetailScreen> {
       key: _scaffoldKey,
       appBar: ZureAppBar(
         sTitle: widget.tmSelect.sName,
+
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -92,10 +93,19 @@ class _ZureTableDetailScreenState extends State<ZureTableDetailScreen> {
                         pNext: ZureInsertDataScreen(
                           sTable: widget.tmSelect.sName,
                         ),
+                        fPopAction: (result) {
+                          if (result != null) {
+                            ZureNavigatorService(context).zureShowSnackBar(
+                              'Success input data (id = $result).',
+                              _scaffoldKey,
+                            );
+                            _getTableData();
+                          }
+                        },
                       ),
                       child: Container(
                         padding: EdgeInsets.symmetric(
-                            horizontal: cOffsetBase, vertical: cOffsetXSm),
+                            horizontal: cOffsetBase, vertical: cOffsetSm),
                         decoration: BoxDecoration(
                           color: Colors.green,
                           borderRadius: BorderRadius.all(
@@ -144,19 +154,71 @@ class _ZureTableDetailScreenState extends State<ZureTableDetailScreen> {
                     child: Row(
                       children: [
                         for (var i = 0; i < values.length; i++)
-                          Container(
-                            width: 120.0,
-                            padding: EdgeInsets.symmetric(horizontal: cOffsetSm),
-                            child: Text(
-                              (bDecryptData &&
-                                      widget.tmSelect.models[i].sType == 'TEXT')
-                                  ? ZureStringService.decryptString(
-                                      '${values[values.keys.elementAt(i)]}')
-                                  : '${values[values.keys.elementAt(i)]}',
-                              style: cZureBoldTitle.copyWith(fontSize: cFontMd),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
+                          i == 0
+                              ? Container(
+                                  alignment: Alignment.center,
+                                  width: 120.0,
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: cOffsetSm),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      InkWell(
+                                        onTap: () async {
+                                          var result = await ZureSqliteService.deleteData(widget.tmSelect.sName, 'id', ['${values[values.keys.elementAt(0)]}']);
+                                          if (result != null) {
+                                            ZureNavigatorService(context).zureShowSnackBar('Success delete item', _scaffoldKey);
+                                            _getTableData();
+                                          }
+                                        },
+                                        child: Icon(
+                                          Icons.remove_circle,
+                                          color: Colors.red,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: cOffsetBase,
+                                      ),
+                                      InkWell(
+                                        onTap: () async {
+                                          var result = await ZureSqliteService.deleteData(widget.tmSelect.sName, 'id', ['${values[values.keys.elementAt(0)]}']);
+                                          if (result != null) {
+                                            ZureNavigatorService(context).zureShowSnackBar('Success delete item', _scaffoldKey);
+                                            _getTableData();
+                                          }
+                                        },
+                                        child: Icon(
+                                          Icons.edit,
+                                          color: Colors.green,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: cOffsetBase,
+                                      ),
+                                      Text(
+                                        '${values[values.keys.elementAt(i)]}',
+                                        style: cZureBoldTitle.copyWith(
+                                            fontSize: cFontMd),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              : Container(
+                                  width: 120.0,
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: cOffsetSm),
+                                  child: Text(
+                                    (bDecryptData &&
+                                            widget.tmSelect.models[i].sType ==
+                                                'TEXT')
+                                        ? ZureStringService.decryptString(
+                                            '${values[values.keys.elementAt(i)]}')
+                                        : '${values[values.keys.elementAt(i)]}',
+                                    style: cZureBoldTitle.copyWith(
+                                        fontSize: cFontMd),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
                       ],
                     ),
                   ),

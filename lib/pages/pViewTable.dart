@@ -45,22 +45,24 @@ class _ZureViewTableScreenState extends State<ZureViewTableScreen> {
         sTitle: 'View Table',
       ),
       body: Container(
-        padding: EdgeInsets.symmetric(
-            horizontal: cOffsetBase, vertical: cOffsetMd),
+        padding:
+            EdgeInsets.symmetric(horizontal: cOffsetBase, vertical: cOffsetMd),
         child: ListView.builder(
           shrinkWrap: true,
           itemCount: tbModels.length,
           itemBuilder: (context, i) {
             return tbModels[i].wReadOnlyWidget(
               view: () {
-                ZureNavigatorService(context).zurePushToWidget(pNext: ZureTableDetailScreen(tmSelect: tbModels[i]));
+                ZureNavigatorService(context).zurePushToWidget(
+                  pNext: ZureTableDetailScreen(tmSelect: tbModels[i]),
+                  fPopAction: (val) => _getTableData(),
+                );
               },
               edit: () {
-                ZureNavigatorService(context).zureShowSnackBar('Not added yet', _scaffoldKey);
+                ZureNavigatorService(context)
+                    .zureShowSnackBar('Not added yet', _scaffoldKey);
               },
-              remove: () {
-
-              },
+              remove: () {},
             );
           },
         ),

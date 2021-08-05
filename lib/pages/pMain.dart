@@ -8,7 +8,6 @@ import 'package:sqlite_service/services/svNavigator.dart';
 import 'package:sqlite_service/services/svSqlite.dart';
 import 'package:sqlite_service/themes/tDimens.dart';
 
-
 class ZureMainScreen extends StatefulWidget {
   const ZureMainScreen({Key key}) : super(key: key);
 
@@ -41,21 +40,6 @@ class _ZureMainScreenState extends State<ZureMainScreen> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              // ZureFullButton(
-              //   sTitle: 'Init Database',
-              //   fAction: () => ZureNavigatorService(context).zurePushToWidget(
-              //     pNext: ZureInitDatabaseScreen(),
-              //     fPopAction: (bOpen) {
-              //       if (bOpen) {
-              //         ZureNavigatorService(context).zureShowSnackBar(
-              //             'Securit Database Created!', _scaffoldKey);
-              //       }
-              //     },
-              //   ),
-              // ),
-              // SizedBox(
-              //   height: cOffsetBase,
-              // ),
               ZureFullButton(
                 sTitle: 'Create Table',
                 fAction: () => ZureNavigatorService(context).zurePushToWidget(
@@ -80,21 +64,23 @@ class _ZureMainScreenState extends State<ZureMainScreen> {
               ),
               ZureFullButton(
                 sTitle: 'Insert Data',
-                fAction: () => ZureNavigatorService(context)
-                    .zurePushToWidget(pNext: ZureInsertDataScreen()),
+                fAction: () => ZureNavigatorService(context).zurePushToWidget(
+                  pNext: ZureInsertDataScreen(),
+                  fPopAction: (result) {
+                    if (result != null) {
+                      ZureNavigatorService(context).zureShowSnackBar(
+                        'Success input data (id = $result).',
+                        _scaffoldKey,
+                      );
+                    }
+                  },
+                ),
               ),
               SizedBox(
                 height: cOffsetBase,
               ),
               ZureFullButton(
                 sTitle: 'Update Data',
-                fAction: () {},
-              ),
-              SizedBox(
-                height: cOffsetBase,
-              ),
-              ZureFullButton(
-                sTitle: 'Delete Data',
                 fAction: () {},
               ),
             ],
