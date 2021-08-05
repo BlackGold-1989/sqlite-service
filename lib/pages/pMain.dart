@@ -8,6 +8,8 @@ import 'package:sqlite_service/services/svNavigator.dart';
 import 'package:sqlite_service/services/svSqlite.dart';
 import 'package:sqlite_service/themes/tDimens.dart';
 
+import 'pUpdateData.dart';
+
 class ZureMainScreen extends StatefulWidget {
   const ZureMainScreen({Key key}) : super(key: key);
 
@@ -81,7 +83,17 @@ class _ZureMainScreenState extends State<ZureMainScreen> {
               ),
               ZureFullButton(
                 sTitle: 'Update Data',
-                fAction: () {},
+                fAction: () => ZureNavigatorService(context).zurePushToWidget(
+                  pNext: ZureUpdateDataScreen(),
+                  fPopAction: (result) {
+                    if (result != null) {
+                      ZureNavigatorService(context).zureShowSnackBar(
+                        'Success update data (id = $result).',
+                        _scaffoldKey,
+                      );
+                    }
+                  },
+                ),
               ),
             ],
           ),

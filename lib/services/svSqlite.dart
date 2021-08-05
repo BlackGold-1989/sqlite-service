@@ -9,7 +9,6 @@ import 'package:sqlite_service/models/mTable.dart';
 import 'package:sqlite_service/scripts/sConstants.dart';
 
 class ZureSqliteService {
-
   static Database dbService;
 
   static Future<void> initDatabase() async {
@@ -31,8 +30,13 @@ class ZureSqliteService {
     );
   }
 
-  static Future<void> command(String sComment) async {
-    await dbService.execute(sComment);
+  static Future<String> command(String sComment) async {
+    try {
+      await dbService.execute(sComment);
+      return '';
+    } catch (e) {
+      return e.toString();
+    }
   }
 
   static Future<void> close() async {
@@ -40,8 +44,7 @@ class ZureSqliteService {
   }
 
   static Future<List<String>> zureAllTableList() async {
-    var sql =
-        'SELECT name FROM sqlite_master WHERE type=\'table\'';
+    var sql = 'SELECT name FROM sqlite_master WHERE type=\'table\'';
     var res = await dbService.rawQuery(sql);
     print('[DB Table] list: ${jsonEncode(res)}');
     List<String> tables = [];
@@ -52,8 +55,7 @@ class ZureSqliteService {
   }
 
   static Future<ZureTableModel> zureTable(String tb_name) async {
-    var sql =
-        'PRAGMA table_info($tb_name)';
+    var sql = 'PRAGMA table_info($tb_name)';
     var res = await dbService.rawQuery(sql);
     var tbModel = ZureTableModel(sName: tb_name, models: []);
     for (var field in res) {
@@ -89,10 +91,10 @@ class ZureSqliteService {
     return result;
   }
 
-  static Future<int> deleteData(String tableName, String whereField, List<String> whereVal) async {
+  static Future<int> deleteData(
+      String tableName, String whereField, List<String> whereVal) async {
     var result = await dbService.delete(tableName,
         where: '$whereField = ?', whereArgs: whereVal);
     return result;
   }
-
 }

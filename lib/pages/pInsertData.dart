@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:sqlite_service/components/cAppbar.dart';
 import 'package:sqlite_service/components/cButton.dart';
+import 'package:sqlite_service/components/cManualBash.dart';
 import 'package:sqlite_service/components/cTextField.dart';
 import 'package:sqlite_service/models/mTable.dart';
 import 'package:sqlite_service/scripts/sConstants.dart';
@@ -32,6 +33,8 @@ class _ZureInsertDataScreenState extends State<ZureInsertDataScreen> {
   var tSQLSelected = ZureTableModel(sName: '', models: []);
 
   List<TextEditingController> tcTableData = [];
+
+  var tcManualCommand = TextEditingController();
 
   @override
   void initState() {
@@ -68,10 +71,6 @@ class _ZureInsertDataScreenState extends State<ZureInsertDataScreen> {
       tcTableData.add(TextEditingController());
     }
     setState(() {});
-  }
-
-  Widget _manualWidget() {
-    return Container();
   }
 
   Widget _autoWidget() {
@@ -137,7 +136,9 @@ class _ZureInsertDataScreenState extends State<ZureInsertDataScreen> {
         if (tSQLSelected.sName.isNotEmpty)
           Card(
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(cOffsetBase),),
+              borderRadius: BorderRadius.all(
+                Radius.circular(cOffsetBase),
+              ),
             ),
             child: Container(
               padding: EdgeInsets.all(cOffsetBase),
@@ -167,18 +168,18 @@ class _ZureInsertDataScreenState extends State<ZureInsertDataScreen> {
                           Expanded(
                             child: field.bPrimary
                                 ? Text(
-                              'Primary Data',
-                              style: cZureMediumText,
-                            )
+                                    'Primary Data',
+                                    style: cZureMediumText,
+                                  )
                                 : ZureUnderLineTextField(
-                              tcController:
-                              tcTableData[tSQLSelected.models.indexOf(field)],
-                              ttKeyBoard: field.sType == scFieldType[1]
-                                  ? TextInputType.text
-                                  : TextInputType.number,
-                              sHint: 'Field Value',
-                              bReadOnly: field.bPrimary,
-                            ),
+                                    tcController: tcTableData[
+                                        tSQLSelected.models.indexOf(field)],
+                                    ttKeyBoard: field.sType == scFieldType[1]
+                                        ? TextInputType.text
+                                        : TextInputType.number,
+                                    sHint: 'Field Value',
+                                    bReadOnly: field.bPrimary,
+                                  ),
                             flex: 2,
                           )
                         ],
@@ -234,7 +235,12 @@ class _ZureInsertDataScreenState extends State<ZureInsertDataScreen> {
                     ],
                   ),
                 ),
-                bManual ? _manualWidget() : _autoWidget(),
+                bManual
+                    ? ZureManualBashWidget(
+                        controller: tcManualCommand,
+                        sSample: 'INSERT INTO prod_mast(prod_id, prod_name, prod_rate, prod_qc) VALUES(1, \'Pancakes\', 75, \'OK\');',
+                      )
+                    : _autoWidget(),
                 SizedBox(
                   height: cOffsetLg,
                 ),
@@ -251,27 +257,45 @@ class _ZureInsertDataScreenState extends State<ZureInsertDataScreen> {
   }
 
   void _checkQuery() async {
-    var isCheck = false;
-    Map<String, String> tbMap = Map<String, String>();
-    for (var controller in tcTableData) {
-      if (controller.text.isNotEmpty) {
-        isCheck = true;
-        tbMap[tSQLSelected.models[tcTableData.indexOf(controller)].sName] =
-            tSQLSelected.models[tcTableData.indexOf(controller)].sType == 'TEXT'
-                ? ZureStringService.encryptString(controller.text)
-                : controller.text;
+    if (bManual) {
+      var command = tcManualCommand.text;
+      if (command.isEmpty) {
+        ZureNavigatorService(context).zureShowSnackBar(
+            'Please input some words.', _scaffoldKey,
+            type: ZureSnackBarType.ERROR);
+        return;
       }
-    }
-    if (isCheck) {
-      print('[DB insert] data: ${jsonEncode(tbMap)}');
-      var result = await ZureSqliteService.insertData(sTableName, tbMap);
-      if (result != null) {
-        Navigator.of(context).pop(result);
+      var result = await ZureSqliteService.command(command);
+      if (result.isEmpty) {
+        Navigator.of(context).pop();
+      } else {
+        ZureNavigatorService(context).zureShowSnackBar(result, _scaffoldKey,
+            type: ZureSnackBarType.ERROR);
       }
     } else {
-      ZureNavigatorService(context).zureShowSnackBar(
-          'Please input some data.', _scaffoldKey,
-          type: ZureSnackBarType.ERROR);
+      var isCheck = false;
+      Map<String, String> tbMap = Map<String, String>();
+      for (var controller in tcTableData) {
+        if (controller.text.isNotEmpty) {
+          isCheck = true;
+          tbMap[tSQLSelected.models[tcTableData.indexOf(controller)].sName] =
+              tSQLSelected.models[tcTableData.indexOf(controller)].sType ==
+                      'TEXT'
+                  ? ZureStringService.encryptString(controller.text)
+                  : controller.text;
+        }
+      }
+      if (isCheck) {
+        print('[DB insert] data: ${jsonEncode(tbMap)}');
+        var result = await ZureSqliteService.insertData(sTableName, tbMap);
+        if (result != null) {
+          Navigator.of(context).pop(result);
+        }
+      } else {
+        ZureNavigatorService(context).zureShowSnackBar(
+            'Please input some data.', _scaffoldKey,
+            type: ZureSnackBarType.ERROR);
+      }
     }
   }
 }
