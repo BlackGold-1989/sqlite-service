@@ -12,6 +12,9 @@ import 'package:sqlite_service/themes/tColors.dart';
 import 'package:sqlite_service/themes/tDimens.dart';
 import 'package:sqlite_service/themes/tStyle.dart';
 
+import '../services/svNavigator.dart';
+import 'pUpdateData.dart';
+
 class ZureTableDetailScreen extends StatefulWidget {
   final ZureTableModel tmSelect;
 
@@ -55,7 +58,6 @@ class _ZureTableDetailScreenState extends State<ZureTableDetailScreen> {
       key: _scaffoldKey,
       appBar: ZureAppBar(
         sTitle: widget.tmSelect.sName,
-
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -165,9 +167,16 @@ class _ZureTableDetailScreenState extends State<ZureTableDetailScreen> {
                                     children: [
                                       InkWell(
                                         onTap: () async {
-                                          var result = await ZureSqliteService.deleteData(widget.tmSelect.sName, 'id', ['${values[values.keys.elementAt(0)]}']);
+                                          var result = await ZureSqliteService
+                                              .deleteData(
+                                                  widget.tmSelect.sName, 'id', [
+                                            '${values[values.keys.elementAt(0)]}'
+                                          ]);
                                           if (result != null) {
-                                            ZureNavigatorService(context).zureShowSnackBar('Success delete item', _scaffoldKey);
+                                            ZureNavigatorService(context)
+                                                .zureShowSnackBar(
+                                                    'Success delete item',
+                                                    _scaffoldKey);
                                             _getTableData();
                                           }
                                         },
@@ -180,13 +189,19 @@ class _ZureTableDetailScreenState extends State<ZureTableDetailScreen> {
                                         width: cOffsetBase,
                                       ),
                                       InkWell(
-                                        onTap: () async {
-                                          var result = await ZureSqliteService.deleteData(widget.tmSelect.sName, 'id', ['${values[values.keys.elementAt(0)]}']);
-                                          if (result != null) {
-                                            ZureNavigatorService(context).zureShowSnackBar('Success delete item', _scaffoldKey);
-                                            _getTableData();
-                                          }
-                                        },
+                                        onTap: () =>
+                                            ZureNavigatorService(context)
+                                                .zurePushToWidget(
+                                          pNext: ZureUpdateDataScreen(
+                                            sTable: widget.tmSelect.sName,
+                                            dItemData: values,
+                                          ),
+                                          fPopAction: (value) {
+                                            if (value != null) {
+                                              _getTableData();
+                                            }
+                                          },
+                                        ),
                                         child: Icon(
                                           Icons.edit,
                                           color: Colors.green,

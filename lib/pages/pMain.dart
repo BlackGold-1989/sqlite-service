@@ -78,23 +78,23 @@ class _ZureMainScreenState extends State<ZureMainScreen> {
                   },
                 ),
               ),
-              SizedBox(
-                height: cOffsetBase,
-              ),
-              ZureFullButton(
-                sTitle: 'Update Data',
-                fAction: () => ZureNavigatorService(context).zurePushToWidget(
-                  pNext: ZureUpdateDataScreen(),
-                  fPopAction: (result) {
-                    if (result != null) {
-                      ZureNavigatorService(context).zureShowSnackBar(
-                        'Success update data (id = $result).',
-                        _scaffoldKey,
-                      );
-                    }
-                  },
-                ),
-              ),
+              // SizedBox(
+              //   height: cOffsetBase,
+              // ),
+              // ZureFullButton(
+              //   sTitle: 'Update Data',
+              //   fAction: () => ZureNavigatorService(context).zurePushToWidget(
+              //     pNext: ZureUpdateDataScreen(),
+              //     fPopAction: (result) {
+              //       if (result != null) {
+              //         ZureNavigatorService(context).zureShowSnackBar(
+              //           'Success update data (id = $result).',
+              //           _scaffoldKey,
+              //         );
+              //       }
+              //     },
+              //   ),
+              // ),
             ],
           ),
         ),
